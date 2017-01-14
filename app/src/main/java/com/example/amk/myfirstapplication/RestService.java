@@ -1,5 +1,7 @@
 package com.example.amk.myfirstapplication;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -40,6 +42,9 @@ public class RestService {
 
             // receive response as inputStream
             inputStream = httpResponse.getEntity().getContent();
+
+            //Converting Image URL to Bitmap
+            //Bitmap bmp = BitmapFactory.decodeStream(inputStream);
 
             // convert input stream to string
             if(inputStream != null)

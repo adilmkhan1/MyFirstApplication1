@@ -4,45 +4,51 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <!--<TextView
         android:id="@+id/author"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="12sp"  />
+        android:textSize="15sp"
+         />-->
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="14sp" />
+        android:textSize="12sp"
+        />
     <TextView
         android:id="@+id/url"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="10sp" />
+        android:layout_height="wrap_content"
+        android:textSize="8sp"
+        android:autoLink="web"
+        />
 
-    <TextView
+    <ImageView
         android:id="@+id/urlToImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="10sp" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        />
 
     <TextView
         android:id="@+id/publishedAt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="10sp" />
+        android:textSize="8sp"
+        />
 
 </LinearLayout>

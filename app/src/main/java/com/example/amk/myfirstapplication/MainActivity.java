@@ -1,18 +1,21 @@
 package com.example.amk.myfirstapplication;
 
+
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListAdapter;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -23,21 +26,29 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 
+import static android.R.attr.data;
+import static android.R.id.list;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.example.amk.myfirstapplication.R.id.url;
+import static com.example.amk.myfirstapplication.R.id.urlToImage;
 
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity{
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    //private ProgressDialog Dialog = new ProgressDialog(this);
+   // private SwipeRefreshLayout swipeRefreshLayout;
 
     //final String url = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=latest&apiKey=965663237b734de284aba3914d33b69d";
 
@@ -53,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
        // final String url = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=latest&apiKey=965663237b734de284aba3914d33b69d";
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        //swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        //swipeRefreshLayout.setOnRefreshListener(this);
 
 
         /**
@@ -71,20 +82,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 }*/
 
 
-        //final Button button = (Button) findViewById(R.id.button_click);
+        Button button = (Button) findViewById(R.id.button_click);
         //button.setEnabled(false);
-        /*button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 // Perform action on click
                 //Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
-               /* Intent intent = new Intent(this, AnotherActivity.class);
-                startActivity(intent);
-                button.setVisibility(View.GONE);
+               // Intent intent = new Intent(this, AnotherActivity.class);
+               // startActivity(intent);
+               // button.setVisibility(View.GONE);
                 String url = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=latest&apiKey=965663237b734de284aba3914d33b69d";
                 new MyAsyncTask().execute(url);
 
             }
-        }); */
+        });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -106,9 +118,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 .build();
     }
 
-    //SwipeRefreshLayout method
-
-   @Override
+   /*@Override
     public void onRefresh() {
         final String url = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=latest&apiKey=965663237b734de284aba3914d33b69d";
         new Handler().postDelayed(new Runnable() {
@@ -117,9 +127,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }, 5000);
     }
-
+*/
 
     class MyAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+
+        protected void onPreExecute() {
+            // NOTE: You can call UI Element here.
+
+            //Start Progress Dialog (Message)
+
+            //ProgressDialog.show(MainActivity.this, "","Loading");
+
+        }
 
         @Override
         protected String doInBackground(String... urls) {
@@ -130,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @Override
         protected void onPostExecute(String result) {
 
-            ListView lv = (ListView) findViewById(R.id.text_json);
-
             ArrayList<HashMap<String, String>> newsList = new ArrayList<>();;
+
+            ArrayList<ItemList> arrayOfItems = new ArrayList<>();
 
             try {
 
@@ -142,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 for (int i=0;i< articles.length();i++)
                 {
                     JSONObject c = (JSONObject) articles.get(i);
-                    //String author = c.getString("author");
+                    String author = c.getString("author");
                     String title = c.getString("title");
                     String description = c.getString("description");
                     String url = c.getString("url");
@@ -150,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     String publishedAt = c.getString("publishedAt");
 
                     HashMap<String, String> hm = new HashMap<>();
-                    //hm.put("author",author);
+                    hm.put("author",author);
                     hm.put("title",title);
                     hm.put("description",description);
                     hm.put("url",url);
@@ -158,16 +179,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     hm.put("publishedAt",publishedAt);
 
                     newsList.add(hm);
-
-                    // Updating parsed JSON data into ListView
-                    ListAdapter adapter = new SimpleAdapter(
-                            MainActivity.this, newsList,
-                            R.layout.activity_item, new String[]{"author", "title",
-                            "description","url","urlToImage","publishedAt"}, new int[]{R.id.author,
-                            R.id.title, R.id.description, Integer.parseInt(url),R.id.urlToImage,R.id.publishedAt});
-
-                    lv.setAdapter(adapter);
+                    arrayOfItems.add(new ItemList(author, title, description, url, urlToImage, publishedAt));
+                    // Toast.makeText(MainActivity.this, "Size:"+newsList.size() + "\nArticles"+ articles.length(), Toast.LENGTH_LONG).show();
                 }
+
+                // Construct the data source
+                // Create the adapter to convert the array to views
+                CustomAdapter adapter = new CustomAdapter(MainActivity.this, arrayOfItems);
+                // Attach the adapter to a ListView
+                ListView listView = (ListView) findViewById(R.id.text_json);
+                listView.setAdapter(adapter);
+                //adapter.notifyDataSetChanged();
 
             }
             catch(Exception e)
