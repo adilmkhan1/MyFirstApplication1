@@ -22,6 +22,8 @@ public class Disclaimer extends AppCompatActivity {
         // Text View
 
         TextView txtView = (TextView) findViewById(R.id.text_id);
+        //txtView.setBackgroundColor(0xfff00000);
+        txtView.setBackgroundColor(0xf00000ff);
         String formattedText = "<h><b><font color =\"red\">Please Note</font></b></h><p>This <i>is</i> just <b> for </b>testing</p>";
         txtView.setText(Html.fromHtml(formattedText));
 

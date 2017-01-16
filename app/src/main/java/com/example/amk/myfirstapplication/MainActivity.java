@@ -4,6 +4,7 @@ package com.example.amk.myfirstapplication;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         Button button = (Button) findViewById(R.id.button_click);
+        //Button buttonLoadMore = (Button) findViewById(R.id.button_loadMore);
         //button.setEnabled(false);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +162,14 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+
+        /*buttonLoadMore.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //do something
+
+            }
+        });*/
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -333,6 +343,7 @@ public class MainActivity extends AppCompatActivity{
 
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
