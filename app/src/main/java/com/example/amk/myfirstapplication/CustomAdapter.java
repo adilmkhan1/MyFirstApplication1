@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.amk.myfirstapplication.R.id.url;
 import static com.example.amk.myfirstapplication.R.id.urlToImage;
@@ -22,18 +25,16 @@ import static java.lang.System.load;
  * Created by AdilMateenKhan1 on 12-01-2017.
  */
 
-public class CustomAdapter extends ArrayAdapter<ItemList>{
+public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplication.ItemList>{
 
-    DownloadImageTask imageLoader;
-
-    public CustomAdapter(Context context, ArrayList<ItemList> items) {
+    public CustomAdapter(Context context, List<ItemList> items) {
         super(context, 0, items);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        ItemList item = getItem(position);
+        com.example.amk.myfirstapplication.ItemList item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_item, parent, false);
@@ -43,9 +44,10 @@ public class CustomAdapter extends ArrayAdapter<ItemList>{
         TextView titleName = (TextView) convertView.findViewById(R.id.title);
         TextView descriptionName = (TextView) convertView.findViewById(R.id.description);
         TextView urlName = (TextView) convertView.findViewById(url);
+        //WebView urlName = (WebView) convertView.findViewById(url);
         //TextView urlToImageName = (TextView) convertView.findViewById(R.id.urlToImage);
         ImageView urlToImageName = (ImageView) convertView.findViewById(urlToImage);
-        TextView publishedAtName = (TextView) convertView.findViewById(R.id.publishedAt);
+        //TextView publishedAtName = (TextView) convertView.findViewById(R.id.publishedAt);
 
         // Populate the data into the template view using the data object
         //authorName.setText(item.author);
@@ -53,13 +55,24 @@ public class CustomAdapter extends ArrayAdapter<ItemList>{
         descriptionName.setText(item.description);
         urlName.setText(item.url);
 
+        //Webview Custom client and settings
+
+       /* urlName.setWebViewClient(new MyWebViewClient());
+        urlName.getSettings().setJavaScriptEnabled(true);
+        urlName.getSettings().setBuiltInZoomControls(true);
+        urlName.getSettings().setLoadWithOverviewMode(true);
+        urlName.getSettings().setUseWideViewPort(true);
+
+        urlName.loadUrl(item.url);
+*/
+
         Picasso.with(convertView.getContext())
                 .load(item.urlToImage)
                 .into(urlToImageName);
 
 
         //new DownloadImageTask(urlToImageName).execute(item.urlToImage);
-        publishedAtName.setText(item.publishedAt);
+        //publishedAtName.setText(item.publishedAt);
         // Return the completed view to render on screen
         return convertView;
 
