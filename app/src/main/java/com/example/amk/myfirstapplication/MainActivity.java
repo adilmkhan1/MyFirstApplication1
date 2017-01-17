@@ -61,7 +61,7 @@ import static com.example.amk.myfirstapplication.R.id.url;
 import static com.example.amk.myfirstapplication.R.id.urlToImage;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayout.OnRefreshListener{
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity{
     //private RetainedFragment dataFragment;
 
     private GoogleApiClient client;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     AssetManager assetManager;
     InputStream inputStream = null;
 
@@ -103,30 +106,53 @@ public class MainActivity extends AppCompatActivity{
 
         // final String url = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=latest&apiKey=965663237b734de284aba3914d33b69d";
 
-        //swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        //swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
 
         /**
          * Showing Swipe Refresh animation on activity create
          * As animation won't start on onCreate, post runnable is used
          */
-       /* swipeRefreshLayout.post(new Runnable() {
+       swipeRefreshLayout.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         swipeRefreshLayout.setRefreshing(true);
-                                        new MyAsyncTask().execute(String.valueOf(url));
+                                        try {
+                                            assetManager = getAssets();
+                                            inputStream = assetManager.open("RestEndPoints.txt");
+                                            isr = new InputStreamReader(inputStream);
+                                            input= new BufferedReader(isr);
+
+                                            while ((line = input.readLine()) != null) {
+                                                list.add(line);
+                                            }
+                                            Collections.shuffle(list);
+                                            for (String url : list) {
+                                                new MyAsyncTask().execute(url);
+                                            }
+                                        }catch (Exception e)
+                                        {
+                                            e.getMessage();
+                                        }
+                                        finally {
+                                            try {
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
 
                                     }
-                                }*/
+                                }
+       );
 
 
-        Button button = (Button) findViewById(R.id.button_click);
+        //Button button = (Button) findViewById(R.id.button_click);
         //Button buttonLoadMore = (Button) findViewById(R.id.button_loadMore);
         //button.setEnabled(false);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //button.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            //public void onClick(View v) {
                 // Perform action on click
                 //Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
                // Intent intent = new Intent(this, AnotherActivity.class);
@@ -136,7 +162,7 @@ public class MainActivity extends AppCompatActivity{
 
                 //Read Rest End Points URL from text file
 
-                try {
+                /*try {
                     assetManager = getAssets();
                     inputStream = assetManager.open("RestEndPoints.txt");
                     isr = new InputStreamReader(inputStream);
@@ -158,10 +184,10 @@ public class MainActivity extends AppCompatActivity{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
 
-            }
-        });
+
+        //});
 
         /*buttonLoadMore.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -175,7 +201,34 @@ public class MainActivity extends AppCompatActivity{
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    @Override
+    public void onRefresh() {
 
+        Toast.makeText(MainActivity.this, "Calling onRefresh", Toast.LENGTH_SHORT).show();
+        try {
+            assetManager = getAssets();
+            inputStream = assetManager.open("RestEndPoints.txt");
+            isr = new InputStreamReader(inputStream);
+            input= new BufferedReader(isr);
+
+            while ((line = input.readLine()) != null) {
+                list.add(line);
+            }
+            Collections.shuffle(list);
+            for (String url : list) {
+                new MyAsyncTask().execute(url);
+            }
+        }catch (Exception e)
+        {
+            e.getMessage();
+        }
+        finally {
+            try {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -217,9 +270,9 @@ public class MainActivity extends AppCompatActivity{
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -244,13 +297,15 @@ public class MainActivity extends AppCompatActivity{
 
             //Start Progress Dialog (Message)
 
+            swipeRefreshLayout.setRefreshing(true);
+
            // ProgressDialog.show(MainActivity.this, "","Loading");
 
         }
 
         @Override
         protected String doInBackground(String... urls) {
-
+            //swipeRefreshLayout.setRefreshing(true);
             return RestService.doGet(urls[0]);
         }
 
@@ -306,6 +361,8 @@ public class MainActivity extends AppCompatActivity{
                 listView.addFooterView(btnLoadMore);*/
 
                 listView.setAdapter(adapter);
+
+                swipeRefreshLayout.setRefreshing(false);
                 //adapter.notifyDataSetChanged();
 
                 //Listening to Load More button click event
