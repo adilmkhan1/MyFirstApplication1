@@ -2,6 +2,9 @@ package com.example.amk.myfirstapplication;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.configure;
 import static com.example.amk.myfirstapplication.R.id.url;
 import static com.example.amk.myfirstapplication.R.id.urlToImage;
 import static java.lang.System.load;
@@ -36,7 +40,7 @@ public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplicati
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        com.example.amk.myfirstapplication.ItemList item = getItem(position);
+        final com.example.amk.myfirstapplication.ItemList item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_item, parent, false);
@@ -46,7 +50,7 @@ public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplicati
         TextView titleName = (TextView) convertView.findViewById(R.id.title);
         TextView descriptionName = (TextView) convertView.findViewById(R.id.description);
         TextView urlName = (TextView) convertView.findViewById(url);
-        //WebView urlName = (WebView) convertView.findViewById(url);
+        //final WebView urlName = (WebView) convertView.findViewById(url);
         //TextView urlToImageName = (TextView) convertView.findViewById(R.id.urlToImage);
         ImageView urlToImageName = (ImageView) convertView.findViewById(urlToImage);
         //TextView publishedAtName = (TextView) convertView.findViewById(R.id.publishedAt);
@@ -57,7 +61,33 @@ public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplicati
         descriptionName.setText(item.description);
         urlName.setText(item.url);
 
+        /// Use a CustomTabsIntent.Builder to configure CustomTabsIntent.
+
+        /*CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setCloseButtonIcon(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ic_arrow_back));
+        CustomTabsIntent customTabsIntent = builder.build();
+
+        customTabsIntent.launchUrl(convertView.getContext(), Uri.parse(item.url));*/
+
+
         //Webview Custom client and settings
+
+        /*urlName.setWebViewClient(new WebViewClient()
+        {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                view.loadUrl(url);
+                return true;
+            }
+        });*/
 
        /* urlName.setWebViewClient(new MyWebViewClient());
         urlName.getSettings().setJavaScriptEnabled(true);

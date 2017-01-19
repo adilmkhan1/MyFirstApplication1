@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference android:key="message"
+        android:summary="Enter The Message to be sent"
+        android:dialogTitle="News Settings"
+        android:dialogMessage="Enter Message Content"
+        android:title="Enter Message Content"/>
+</PreferenceScreen>

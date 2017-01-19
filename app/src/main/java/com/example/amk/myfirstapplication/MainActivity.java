@@ -148,17 +148,18 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
 
 
         //Button button = (Button) findViewById(R.id.button_click);
-        //Button buttonLoadMore = (Button) findViewById(R.id.button_loadMore);
+        Button buttonLoadMore = (Button) findViewById(R.id.button_loadMore);
         //button.setEnabled(false);
-        //button.setOnClickListener(new View.OnClickListener() {
-            //@Override
-            //public void onClick(View v) {
-                // Perform action on click
-                //Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
-               // Intent intent = new Intent(this, AnotherActivity.class);
-               // startActivity(intent);
-               // button.setVisibility(View.GONE);
+        buttonLoadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                //Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
+                // Intent intent = new Intent(this, AnotherActivity.class);
+                // startActivity(intent);
+                // button.setVisibility(View.GONE);
+            }
+        });
 
                 //Read Rest End Points URL from text file
 
@@ -411,13 +412,16 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         switch (item.getItemId()) {
 
             case R.id.action_settings:
+
+               /* Intent intent = new Intent(this, com.example.amk.myfirstapplication.UserSettingActivity.class);
+                startActivity(intent);*/
                 Toast.makeText(MainActivity.this, "Will add soon", Toast.LENGTH_SHORT).show();
                 return true;
 
 
             case R.id.action_about:
-                Intent intent = new Intent(this, com.example.amk.myfirstapplication.Disclaimer.class);
-                startActivity(intent);
+                Intent intent1 = new Intent(this, com.example.amk.myfirstapplication.Disclaimer.class);
+                startActivity(intent1);
                 return true;
 
 
