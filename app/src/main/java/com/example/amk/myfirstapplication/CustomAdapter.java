@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +34,11 @@ import static java.lang.System.load;
 
 public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplication.ItemList>{
 
+    private Context mContext;
+
     public CustomAdapter(Context context, List<ItemList> items) {
         super(context, 0, items);
+        mContext = context;
     }
 
     @Override
@@ -49,70 +53,39 @@ public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplicati
         //TextView authorName = (TextView) convertView.findViewById(R.id.author);
         TextView titleName = (TextView) convertView.findViewById(R.id.title);
         TextView descriptionName = (TextView) convertView.findViewById(R.id.description);
-        TextView urlName = (TextView) convertView.findViewById(url);
-        //final WebView urlName = (WebView) convertView.findViewById(url);
-        //TextView urlToImageName = (TextView) convertView.findViewById(R.id.urlToImage);
         ImageView urlToImageName = (ImageView) convertView.findViewById(urlToImage);
+
+        Button readMore = (Button) convertView.findViewById(R.id.button_loadMore);
         //TextView publishedAtName = (TextView) convertView.findViewById(R.id.publishedAt);
 
         // Populate the data into the template view using the data object
         //authorName.setText(item.author);
         titleName.setText(item.title);
         descriptionName.setText(item.description);
-        urlName.setText(item.url);
+        readMore.setTag(item.url);
 
-        /// Use a CustomTabsIntent.Builder to configure CustomTabsIntent.
-
-        /*CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setCloseButtonIcon(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ic_arrow_back));
-        CustomTabsIntent customTabsIntent = builder.build();
-
-        customTabsIntent.launchUrl(convertView.getContext(), Uri.parse(item.url));*/
-
-
-        //Webview Custom client and settings
-
-        /*urlName.setWebViewClient(new WebViewClient()
-        {
+        readMore.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            public void onClick(View v) {
 
-                super.onPageStarted(view, url, favicon);
+                //Toast.makeText(mContext, (String)v.getTag(), Toast.LENGTH_SHORT).show();
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                /*builder.setCloseButtonIcon(BitmapFactory.decodeResource(
+                        getResources(), R.drawable.ic_arrow_back));*/
+                CustomTabsIntent customTabsIntent = builder.build();
+
+                customTabsIntent.launchUrl(mContext, Uri.parse(item.url));
             }
+        });
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-                view.loadUrl(url);
-                return true;
-            }
-        });*/
-
-       /* urlName.setWebViewClient(new MyWebViewClient());
-        urlName.getSettings().setJavaScriptEnabled(true);
-        urlName.getSettings().setBuiltInZoomControls(true);
-        urlName.getSettings().setLoadWithOverviewMode(true);
-        urlName.getSettings().setUseWideViewPort(true);
-
-        urlName.loadUrl(item.url);
-*/
 
         Glide.with(convertView.getContext())
                 .load(item.urlToImage)
                 .thumbnail(0.5f)
+                .override(600,200)
                 .crossFade()
                 .into(urlToImageName);
 
-
-        /*Picasso.with(convertView.getContext())
-                .load(item.urlToImage)
-                .into(urlToImageName);*/
-
-
-        //new DownloadImageTask(urlToImageName).execute(item.urlToImage);
-        //publishedAtName.setText(item.publishedAt);
-        // Return the completed view to render on screen
         return convertView;
 
     }

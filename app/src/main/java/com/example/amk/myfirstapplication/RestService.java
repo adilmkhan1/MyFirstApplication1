@@ -50,9 +50,6 @@ public class RestService {
             // receive response as inputStream
             inputStream = httpResponse.getEntity().getContent();
 
-            //Converting Image URL to Bitmap
-            //Bitmap bmp = BitmapFactory.decodeStream(inputStream);
-
             // convert input stream to string
             if(inputStream != null)
                 result = convertInputStreamToString(inputStream);

@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
 
     private GoogleApiClient client;
 
+    ArrayList<HashMap<String, String>> newsList = new ArrayList<>();
+
     private SwipeRefreshLayout swipeRefreshLayout;
 
     AssetManager assetManager;
@@ -117,86 +119,34 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
        swipeRefreshLayout.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        swipeRefreshLayout.setRefreshing(true);
-                                        try {
-                                            assetManager = getAssets();
-                                            inputStream = assetManager.open("RestEndPoints.txt");
-                                            isr = new InputStreamReader(inputStream);
-                                            input= new BufferedReader(isr);
 
-                                            while ((line = input.readLine()) != null) {
-                                                list.add(line);
-                                            }
-                                            Collections.shuffle(list);
-                                            for (String url : list) {
-                                                new MyAsyncTask().execute(url);
-                                            }
-                                        }catch (Exception e)
-                                        {
-                                            e.getMessage();
-                                        }
-                                        finally {
+                                            swipeRefreshLayout.setRefreshing(true);
                                             try {
+                                                assetManager = getAssets();
+                                                inputStream = assetManager.open("RestEndPoints.txt");
+                                                isr = new InputStreamReader(inputStream);
+                                                input = new BufferedReader(isr);
+
+                                                while ((line = input.readLine()) != null) {
+                                                    list.add(line);
+                                                }
+                                                Collections.shuffle(list);
+                                                for (String url : list) {
+                                                    new MyAsyncTask().execute(url);
+                                                }
                                             } catch (Exception e) {
-                                                e.printStackTrace();
+                                                e.getMessage();
+                                            } finally {
+                                                try {
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
-                                        }
 
                                     }
                                 }
        );
 
-
-        //Button button = (Button) findViewById(R.id.button_click);
-        Button buttonLoadMore = (Button) findViewById(R.id.button_loadMore);
-        //button.setEnabled(false);
-        buttonLoadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
-                // Intent intent = new Intent(this, AnotherActivity.class);
-                // startActivity(intent);
-                // button.setVisibility(View.GONE);
-            }
-        });
-
-                //Read Rest End Points URL from text file
-
-                /*try {
-                    assetManager = getAssets();
-                    inputStream = assetManager.open("RestEndPoints.txt");
-                    isr = new InputStreamReader(inputStream);
-                    input= new BufferedReader(isr);
-
-                    while ((line = input.readLine()) != null) {
-                        list.add(line);
-                    }
-                        Collections.shuffle(list);
-                        for (String url : list) {
-                            new MyAsyncTask().execute(url);
-                        }
-                    }catch (Exception e)
-                {
-                    e.getMessage();
-                }
-                finally {
-                    try {
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }*/
-
-
-        //});
-
-        /*buttonLoadMore.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //do something
-
-            }
-        });*/
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -205,7 +155,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
     @Override
     public void onRefresh() {
 
-        Toast.makeText(MainActivity.this, "Calling onRefresh", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this, "Calling onRefresh", Toast.LENGTH_SHORT).show();
         try {
             assetManager = getAssets();
             inputStream = assetManager.open("RestEndPoints.txt");
@@ -247,23 +197,6 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
                 .build();
     }
 
-   /* @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    if (webView.canGoBack()) {
-                        webView.goBack();
-                    } else {
-                        finish();
-                    }
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }*/
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -277,17 +210,6 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         }
     }
 
-
-   /*@Override
-    public void onRefresh() {
-        final String url = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=latest&apiKey=965663237b734de284aba3914d33b69d";
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-                new MyAsyncTask().execute(url);
-            }
-        }, 5000);
-    }
-*/
 
     class MyAsyncTask extends AsyncTask<String, Void, String> {
 
@@ -344,6 +266,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
                     hm.put("publishedAt",publishedAt);
 
                     newsList.add(hm);
+
                     RetainData.reuseArray.add(new com.example.amk.myfirstapplication.ItemList(author, title, description, url, urlToImage, publishedAt));
                     // Toast.makeText(MainActivity.this, "Size:"+newsList.size() + "\nArticles"+ articles.length(), Toast.LENGTH_LONG).show();
                 }
@@ -354,27 +277,10 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
                 // Attach the adapter to a ListView
                 ListView listView = (ListView) findViewById(R.id.text_json);
 
-             /*   // Creating a button - Load More
-                Button btnLoadMore = new Button(MainActivity.this);
-                btnLoadMore.setText("Load More");
-
-                // Adding button to listview at footer
-                listView.addFooterView(btnLoadMore);*/
 
                 listView.setAdapter(adapter);
 
                 swipeRefreshLayout.setRefreshing(false);
-                //adapter.notifyDataSetChanged();
-
-                //Listening to Load More button click event
-               /* btnLoadMore.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View arg0) {
-                        // Starting a new async task
-                        new loadMoreListView().execute();
-                    }
-                });*/
-
 
             }
             catch(Exception e)
