@@ -47,7 +47,7 @@ public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplicati
         final com.example.amk.myfirstapplication.ItemList item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.content_main, parent, false);
         }
         // Lookup view for data population
         //TextView authorName = (TextView) convertView.findViewById(R.id.author);
@@ -83,6 +83,7 @@ public class CustomAdapter extends ArrayAdapter<com.example.amk.myfirstapplicati
                 .load(item.urlToImage)
                 .thumbnail(0.5f)
                 .override(600,200)
+                .placeholder(R.drawable.android_logo)
                 .crossFade()
                 .into(urlToImageName);
 

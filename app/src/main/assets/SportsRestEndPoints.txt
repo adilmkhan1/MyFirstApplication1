@@ -1,0 +1,10 @@
+https://newsapi.org/v1/articles?source=bbc-sport&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=espn-cric-info&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=football-italia&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=four-four-two&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=fox-sports&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=nfl-news&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=sky-sports-news&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=talksport&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
+https://newsapi.org/v1/articles?source=the-sport-bible&sortBy=top&apiKey=965663237b734de284aba3914d33b69d
